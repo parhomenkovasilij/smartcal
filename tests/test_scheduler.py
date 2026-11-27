@@ -59,6 +59,14 @@ class ReplanTest(unittest.TestCase):
         self.assertAlmostEqual(sum(b.hours for b in result.blocks), 4)
         self.assertTrue(all(b.start >= NOW + timedelta(hours=3) for b in result.blocks))
 
+    def test_skipped_slot_is_not_reused(self):
+        """Регресійний тест для DEF-002: пропущений слот не займається повторно."""
+        task = Task("Звіт", datetime(2026, 3, 5, 20, 0), 4, 2, id=1)
+        skipped = Block(1, NOW, NOW + timedelta(hours=2), "skipped", 1)
+        result = plan([task], [], NOW, S, [skipped])
+        for b in result.blocks:
+            self.assertFalse(b.start < skipped.end and skipped.start < b.end)
+
 
 if __name__ == "__main__":
     unittest.main()
