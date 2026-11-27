@@ -67,6 +67,12 @@ class ReplanTest(unittest.TestCase):
         for b in result.blocks:
             self.assertFalse(b.start < skipped.end and skipped.start < b.end)
 
+    def test_break_after_done_block(self):
+        task = Task("Звіт", datetime(2026, 3, 5, 20, 0), 4, 2, id=1)
+        done = Block(1, NOW, NOW + timedelta(hours=2), "done", 1)
+        result = plan([task], [], NOW + timedelta(hours=2), S, [done])
+        self.assertGreaterEqual(result.blocks[0].start, done.end + timedelta(minutes=S.break_min))
+
 
 if __name__ == "__main__":
     unittest.main()
