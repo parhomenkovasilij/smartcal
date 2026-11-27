@@ -112,7 +112,7 @@ class MainWindow(tk.Tk):
         form = ttk.LabelFrame(self.events_tab, text="Нова подія жорсткого розкладу")
         form.pack(fill="x", padx=6, pady=6)
         self.ev_title, self.ev_start, self.ev_end = tk.StringVar(), tk.StringVar(), tk.StringVar()
-        for i, (label, var) in enumerate([("Назва", self.ev_title), (f"Початок ({DATE_FMT})", self.ev_start),
+        for i, (label, var) in enumerate([("Назва", self.ev_title), ("Початок (ДД.ММ.РРРР ГГ:ХХ)", self.ev_start),
                                           ("Кінець", self.ev_end)]):
             ttk.Label(form, text=label).grid(row=0, column=2 * i, padx=4)
             ttk.Entry(form, textvariable=var, width=22).grid(row=0, column=2 * i + 1, padx=4)
@@ -145,7 +145,7 @@ class MainWindow(tk.Tk):
         self.t_hours, self.t_prio = tk.StringVar(value="2"), tk.StringVar(value=PRIORITY_NAMES[2])
         ttk.Label(form, text="Назва").grid(row=0, column=0)
         ttk.Entry(form, textvariable=self.t_title, width=28).grid(row=0, column=1, padx=4)
-        ttk.Label(form, text=f"Дедлайн ({DATE_FMT})").grid(row=0, column=2)
+        ttk.Label(form, text="Дедлайн (ДД.ММ.РРРР ГГ:ХХ)").grid(row=0, column=2)
         ttk.Entry(form, textvariable=self.t_deadline, width=18).grid(row=0, column=3, padx=4)
         ttk.Label(form, text="Години").grid(row=0, column=4)
         ttk.Entry(form, textvariable=self.t_hours, width=6).grid(row=0, column=5, padx=4)
