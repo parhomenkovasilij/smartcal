@@ -72,10 +72,12 @@ def plan(tasks: list[Task], events: list[FixedEvent], now: datetime,
 
     Завдання обробляються за зростанням дедлайну, а за однакового дедлайну —
     за пріоритетом. Вже виконані блоки зменшують потрібний обсяг годин.
+    Проміжки виконаних і пропущених блоків вважаються зайнятими (DEF-002).
     """
     done_blocks = done_blocks or []
     start = round_up(now)
     busy = [(e.start, e.end) for e in events]
+    busy += [(b.start, b.end) for b in done_blocks if b.status != "planned"]
     result = PlanResult()
     for task in sorted(tasks, key=lambda t: (t.deadline, t.priority)):
         done_h = sum(b.hours for b in done_blocks if b.task_id == task.id and b.status == "done")
