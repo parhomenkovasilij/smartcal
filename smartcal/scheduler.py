@@ -77,7 +77,8 @@ def plan(tasks: list[Task], events: list[FixedEvent], now: datetime,
     done_blocks = done_blocks or []
     start = round_up(now)
     busy = [(e.start, e.end) for e in events]
-    busy += [(b.start, b.end) for b in done_blocks if b.status != "planned"]
+    busy += [(b.start, b.end + timedelta(minutes=settings.break_min))
+             for b in done_blocks if b.status != "planned"]
     result = PlanResult()
     for task in sorted(tasks, key=lambda t: (t.deadline, t.priority)):
         done_h = sum(b.hours for b in done_blocks if b.task_id == task.id and b.status == "done")
