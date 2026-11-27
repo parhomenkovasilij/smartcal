@@ -25,6 +25,12 @@ class SplitTest(unittest.TestCase):
         self.assertEqual(deficit, 0)
         self.assertTrue(all(S.min_block_h <= b.hours <= S.max_block_h for b in blocks))
 
+    def test_last_block_not_longer_than_remaining(self):
+        """Регресійний тест для DEF-001: останній блок не перевищує залишок годин."""
+        task = Task("Звіт", datetime(2026, 3, 4, 20, 0), 3, 2, id=1)
+        blocks, _ = split_task(task, 3, find_free_windows([], NOW, task.deadline, S), S)
+        self.assertEqual([b.hours for b in blocks], [2, 1])
+
     def test_deficit_when_deadline_too_close(self):
         task = Task("Курсова", NOW + timedelta(hours=3), 10, 1, id=1)
         result = plan([task], [], NOW, S)
